@@ -1,25 +1,29 @@
-//package khmerhowto.configuration;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.jdbc.datasource.DriverManagerDataSource;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//
-//import javax.sql.DataSource;
-//
-//@Configuration
-//public class WebConfiguration extends WebSecurityConfigurerAdapter {
-////    @Bean
-////    public DataSource dataSource() {
-////        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-////
-////        dataSource.setDriverClassName("org.postgresql.Driver");
-////        dataSource.setUsername("howto");
-////        dataSource.setPassword("howto!@#");
-////        dataSource.setUrl(
-////            "jdbc:mysql:// 110.74.194.125:5432/howto_7th");
-////
-////        return dataSource;
-////    }
-//
-//}
+package khmerhowto.configuration;
+
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableOAuth2Sso
+public class WebConfiguration extends WebSecurityConfigurerAdapter {
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+       http.csrf().disable().antMatcher("/**")
+           .authorizeRequests()
+//           .antMatchers("/s")
+//           .permitAll()
+           .anyRequest()
+           .authenticated();
+
+    }
+}
